@@ -1,0 +1,150 @@
+openapi: 3.0.3
+info:
+  title: Тест
+  version: '1.0'
+servers: 
+  - url: http://localhost:8080/api/v1/
+    description: dev server
+paths:
+  /time-measurements/log:
+    get: 
+      summary: Метод получения истории измерений
+      tags: 
+        - Time measurements controller
+      operationId: getLogMethodExecutionTime
+      parameters:
+        - name: from
+          in: query
+          required: true
+          schema:
+            type: string
+            format: date-time
+            description: Начало периода 
+            example: 2024-03-01T00:00:00
+        
+        - name: to
+          in: query
+          required: true
+          schema:
+            type: string
+            format: date-time
+            description: Конец периода
+            example: 2024-03-31T23:59:59
+        
+        - name: page
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int32
+            description: Номер страницы
+            minimum: 0
+            example: 0
+            
+        - name: size
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int32
+            description: Количество записей  
+            minimum: 1
+            example: 10
+        
+        - name: sort
+          in: query
+          required: false
+          schema:
+            type: string
+            description: Направление сортировки
+            enum: 
+              - asc
+              - desc
+            example: desc  
+            
+      responses:
+        '200': 
+          description: Успешный ответ со списком измерений
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TimeMeasurementDtos"
+        '400':
+          description: Не корректный запрос клиента
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessage"  
+        '500':
+          description: Внутренаяя ошибка сервера
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorMessage" 
+
+components:
+  schemas:
+    TimeMeasurementDto:
+      type: object
+      description: Замер времени выполнения метода  
+      properties:
+        methodInfo:
+          $ref: "#/components/schemas/MethodInfoDto"
+        executionTime:
+          type: integer
+          format: int64
+          description: Время выполнения метода
+          example: 1508034900
+        createdAt:
+          type: string
+          format: date-time
+          description: Дата и время замера
+          example: 2024-03-01T15:03:57.362718
+    
+    TimeMeasurementDtos:
+      type: array
+      items:
+         $ref: "#/components/schemas/TimeMeasurementDto"
+         
+    MethodInfoDto:
+      description: Информация о методе 
+      type: object
+      properties:
+        className:
+          type: string
+          description: Полное имя класса
+          example: com.example.timetracker.service.impl.DefaultFooBarService
+        methodName:
+          type: string
+          description: Имя метода
+          example: foo
+        signatureShortName:
+          type: string
+          description: Короткая сигнатура метода
+          example: DefaultFooBarService.foo()
+        signatureLongName:
+          type: string
+          description: Длинная сигнатура метода
+          example: public void com.example.timetracker.service.impl.DefaultFooBarService.foo()
+          
+    ErrorMessage:
+      description: Описание ошибки
+      type: object
+      properties:
+        statusCode:
+          type: integer
+          format: int32
+          description: Код ошибки
+        timeStamp:
+          type: string
+          description: Дата и время ошибки
+        message:
+          type: string
+          description: Сообщение об ошибке
+        description:
+          type: string
+          description: Подробное описание ошибки  
+          
+  
+    
+    

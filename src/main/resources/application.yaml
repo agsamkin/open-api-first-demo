@@ -1,0 +1,20 @@
+base-url: /api/v1
+
+spring:
+  application:
+    name: open-api-first-demo
+
+server:
+  port: ${SERVER_PORT:8080}
+
+springdoc:
+  swagger-ui:
+    url: /api.yaml
+
+
+logging:
+  level:
+    web: TRACE
+    org:
+      springframework:
+        web: TRACE
