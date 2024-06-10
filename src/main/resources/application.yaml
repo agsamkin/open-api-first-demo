@@ -12,9 +12,9 @@ springdoc:
     url: /api.yaml
 
 
-logging:
-  level:
-    web: TRACE
-    org:
-      springframework:
-        web: TRACE
+#logging:
+#  level:
+#    web: TRACE
+#    org:
+#      springframework:
+#        web: TRACE
