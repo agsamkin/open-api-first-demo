@@ -1,5 +1,7 @@
 # OpenAPI Contract First Demo Project
 
+Проект для демонстрации подхода Contract First при разработки REST API.
+
 ## How to use
 
 1. Подготовить спецификацию в [Swagger Editor](https://editor.swagger.io/)
